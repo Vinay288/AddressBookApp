@@ -70,6 +70,14 @@ const save = () => {
         console.log(e);
     }
 }
+const reset=()=>{
+    setValue("#name", "");
+    setValue("#phoneNumber","");
+    setValue("#address","");
+    setValue("state","");
+    setValue("city","");
+    setValue("zip","");
+}
 
 const createAddressBookDataObject = () => {
     try {
