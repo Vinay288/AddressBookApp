@@ -59,3 +59,29 @@ window.addEventListener('DOMContentLoaded', (event) => {
     });
 
 });
+
+const save = () => {
+    try {
+        createAddressBookDataObject();
+        createAndUpdateStorage();
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+
+const createAddressBookDataObject = () => {
+    let addressBookDataObject = new AddressBookData();
+    try {
+        addressBookDataObject._id = createNewContactId();
+        addressBookDataObject._name = getInputValueById('#name');
+        addressBookDataObject._phone = getInputValueById("#phoneNumber");
+        addressBookDataObject._address = getInputValueById('#address');
+        addressBookDataObject._state = getInputValueById("#state");
+        addressBookDataObject._city = getInputValueById("#city");
+        addressBookDataObject._zipcode = getInputValueById("#zip");
+    } catch (e) {
+        console.log(e);
+    }
+    return addressBookDataObject;
+}
