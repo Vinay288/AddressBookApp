@@ -94,7 +94,6 @@ const createNewContactId = () => {
     localStorage.setItem("ContactID", contactID);
     return contactID;
 }
-
 const createAndUpdateStorage = () => {
     let contactList = JSON.parse(localStorage.getItem("ContactsList"));
     if (contactList) {
