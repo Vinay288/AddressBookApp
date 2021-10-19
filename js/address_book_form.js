@@ -1,3 +1,4 @@
+let addressBookDataObject={};
 window.addEventListener('DOMContentLoaded', (event) => {
     const name = document.querySelector('#name');
     const textError = document.querySelector('.text-error');
@@ -71,17 +72,37 @@ const save = () => {
 }
 
 const createAddressBookDataObject = () => {
-    let addressBookDataObject = new AddressBookData();
     try {
-        addressBookDataObject._id = createNewContactId();
-        addressBookDataObject._name = getInputValueById('#name');
-        addressBookDataObject._phone = getInputValueById("#phoneNumber");
-        addressBookDataObject._address = getInputValueById('#address');
-        addressBookDataObject._state = getInputValueById("#state");
-        addressBookDataObject._city = getInputValueById("#city");
-        addressBookDataObject._zipcode = getInputValueById("#zip");
+        addressBookDataObject.id = createNewContactId();
+        addressBookDataObject.name = getInputValueById('#name');
+        addressBookDataObject.phone = getInputValueById("#phoneNumber");
+        addressBookDataObject.address = getInputValueById('#address');
+        addressBookDataObject.state = getInputValueById("#state");
+        addressBookDataObject.city = getInputValueById("#city");
+        addressBookDataObject.zipcode = getInputValueById("#zip");
     } catch (e) {
         console.log(e);
     }
-    return addressBookDataObject;
+}
+const getInputValueById = (id) => {
+    let value = document.querySelector(id).value;
+    return value;
+}
+const createNewContactId = () => {
+    let contactID = localStorage.getItem("ContactID");
+    contactID = !contactID ? 1 : (parseInt(contactID) + 1).toString();
+    localStorage.setItem("ContactID", contactID);
+    return contactID;
+}
+
+const createAndUpdateStorage = () => {
+    let contactList = JSON.parse(localStorage.getItem("ContactsList"));
+    if (contactList) {
+        contactList.push(addressBookDataObject);
+    }
+    else {
+        contactList = [addressBookDataObject];
+    }
+    localStorage.setItem("ContactsList", JSON.stringify(contactList));
+    alert("updated contact details! total contacts are = " + contactList.length);
 }
