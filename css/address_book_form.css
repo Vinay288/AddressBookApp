@@ -15,7 +15,6 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    border: 0px solid green;
     font-weight: bolder;
   }
   
@@ -23,12 +22,10 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    border: 0px solid green;
     width: 80%;
   }
   
   .logo-content img {
-    border: 0px solid #42515f;
     height: 44px;
     width: 44px;
   }
@@ -100,4 +97,35 @@ body {
     justify-content: center;
     margin-right: 55px;
     text-decoration-style: none;
+  }
+  .row-content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 0px 100px;
+    border: 0px solid green;
+  }
+  
+  .label {
+    min-width: 140px;
+  }
+  
+  label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+  }
+  
+  .text {
+    font-size: 16px;
+    color: #42515f;
+    opacity: 1;
+    font-family: Roboto;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #bdbdbd;
+    border-radius: 4px;
+    resize: vertical;
   }
