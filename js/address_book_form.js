@@ -27,7 +27,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             PhoneNumberError.textContent = e;
         }
     });
-    
+
     const zip = document.querySelector('#zip');
     const zipError = document.querySelector('.zip-error');
     zip.addEventListener('input', function () {
@@ -42,4 +42,20 @@ window.addEventListener('DOMContentLoaded', (event) => {
             zipError.textContent = e;
         }
     });
+
+    const address = document.querySelector('#address');
+    const addressError = document.querySelector('#address-error');
+    address.addEventListener('input', function () {
+        if (address.value.length == 0) {
+            addressError.textContent = "";
+            return;
+        }
+        try {
+            (new AddressBookData()).address = address.value;
+            addressError.textContent = "";
+        } catch (e) {
+            addressError.textContent = e;
+        }
+    });
+
 });
