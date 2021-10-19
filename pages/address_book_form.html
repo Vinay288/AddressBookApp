@@ -57,11 +57,16 @@
                     <label class="label text" for="state">State</label>
                     <select id="state" name="State">
                         <option value="" hidden>Select State</option>
-                      <option value="Karnataka">Karnataka</option>
-                      <option value="Telengana">Maharastra</option>
-                      <option value="Tamil Nadu">Kerala</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Telengana">Maharastra</option>
+                        <option value="Tamil Nadu">Kerala</option>
                     </select>
-                  </div>
+                </div>
+                <div>
+                    <label class="label text" for="zip">Zipcode</label>
+                    <input class="input" type="text" id="zip" name="zip" required autocomplete="disable" />
+                    <error-output id="zip-error" class="zip-error" for="zip"></error-output>
+                </div>
             </div>
         </form>
     </div>
