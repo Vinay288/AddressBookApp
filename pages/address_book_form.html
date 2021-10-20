@@ -54,7 +54,7 @@
                         <option value="Hyderabad">Cochin</option>
                     </select>
                 </div>
-                <div>
+                <div class ="state-row">
                     <label class="label text" for="state">State</label>
                     <select id="state" name="State">
                         <option value="" hidden>Select State</option>
@@ -71,10 +71,10 @@
             </div>
             <div class="buttonParent">
                 <div class="submit-reset">
-                <button type="submit" class="button submitButton" id="submitButton" onclick="save()" >
+                <button type="submit" class="button submitButton" id="submitButton" onclick="save()" disabled>
                   Add
                 </button>
-                <button type="reset" class="resetButton button" onclick="reset()">Reset</button>
+                <button type="reset" class="resetButton button" id="resetButton" onclick="reset()" disabled>Reset</button>
                 </div>
               </div>
         </form>
