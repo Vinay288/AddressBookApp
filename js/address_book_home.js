@@ -73,9 +73,21 @@ const remove = (node) => {
   if (!contactData) return;
   const index = contactsList.map(contact => contact.id).indexOf(contactData.id);
   contactsList.splice(index, 1);
-  localStorage.setItem("ContactsList", JSON.stringify(contactsList));
-  document.querySelector(".address-count").textContent = contactsList.length;
-  createInnerHtml();
+  if (site_properties.localStorage.match("true")) {
+    localStorage.setItem("ContactsList", JSON.stringify(contactsList));
+    document.querySelector(".address-count").textContent = contactsList.length;
+    createInnerHtml();
+  }
+  else {
+    const deleteURL = site_properties.site_url + contactData.id.toString();
+    makeServiceCall("DELETE", deleteURL, false)
+      .then(responseText => {
+        createInnerHtml();
+      })
+      .catch(error => {
+        console.log("DELETE ERROR status: " + JSON.stringify(error));
+      });
+  }
 };
 
 const update = (node) => {
