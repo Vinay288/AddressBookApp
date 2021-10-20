@@ -1,16 +1,18 @@
-let addressBookDataObject={};
+let addressBookDataObject = {};
 window.addEventListener('DOMContentLoaded', (event) => {
     const name = document.querySelector('#name');
     const textError = document.querySelector('.text-error');
     name.addEventListener('input', function () {
         if (name.value.length == 0) {
             textError.textContent = "";
+            buttonAction(true);
             return;
         }
         try {
             (new AddressBookData()).name = name.value;
             textError.textContent = "";
         } catch (e) {
+            buttonAction(true);
             textError.textContent = e;
         }
     });
@@ -19,12 +21,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
     phoneNumber.addEventListener('input', function () {
         if (phoneNumber.value.length == 0) {
             PhoneNumberError.textContent = "";
+            buttonAction(true);
             return;
         }
         try {
             (new AddressBookData()).phone = phoneNumber.value;
             PhoneNumberError.textContent = "";
         } catch (e) {
+            buttonAction(true);
             PhoneNumberError.textContent = e;
         }
     });
@@ -34,12 +38,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
     zip.addEventListener('input', function () {
         if (zip.value.length == 0) {
             zipError.textContent = "";
+            buttonAction(true);
             return;
         }
         try {
             (new AddressBookData()).zipcode = zip.value;
             zipError.textContent = "";
+            if (zip.value && phoneNumber.value && name.value) {
+                buttonAction(false);
+            }
         } catch (e) {
+            buttonAction(true);
             zipError.textContent = e;
         }
     });
@@ -49,36 +58,56 @@ window.addEventListener('DOMContentLoaded', (event) => {
     address.addEventListener('input', function () {
         if (address.value.length == 0) {
             addressError.textContent = "";
+            buttonAction(true);
             return;
         }
         try {
             (new AddressBookData()).address = address.value;
             addressError.textContent = "";
+
         } catch (e) {
+            buttonAction(true);
             addressError.textContent = e;
         }
     });
 
 });
-
+const buttonAction=(value)=>{
+    document.getElementById('submitButton').disabled = value;
+    document.getElementById('resetButton').disabled = value
+}
 const save = () => {
     try {
+        createAddressBookData();
         createAddressBookDataObject();
         createAndUpdateStorage();
     }
     catch (e) {
-        console.log(e);
+        alert(" please Enter all values")
     }
 }
-const reset=()=>{
+const reset = () => {
     setValue("#name", "");
-    setValue("#phoneNumber","");
-    setValue("#address","");
-    setValue("state","");
-    setValue("city","");
-    setValue("zip","");
+    setValue("#phoneNumber", "");
+    setValue("#address", "");
+    setValue("state", "");
+    setValue("city", "");
+    setValue("zip", "");
 }
-
+const createAddressBookData = () => {
+    let addressBookData = new AddressBookData();
+    try {
+        addressBookData.id = createNewContactId();
+        addressBookData.name = getInputValueById('#name');
+        addressBookData.phone = getInputValueById("#phoneNumber");
+        addressBookData.address = getInputValueById('#address');
+        addressBookData.state = getInputValueById("#state");
+        addressBookData.city = getInputValueById("#city");
+        addressBookData.zipcode = getInputValueById("#zip");
+    } catch (e) {
+        throw e;
+    }
+}
 const createAddressBookDataObject = () => {
     try {
         addressBookDataObject.id = createNewContactId();
