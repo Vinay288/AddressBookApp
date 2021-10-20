@@ -199,3 +199,14 @@ body {
     color: red;
     white-space: nowrap;
   }
+  
+  @media only screen and (max-width: 960px) {
+    .cancelButton {
+      margin-left: 0px;
+    }
+  
+    .form {
+      width: 85%;
+      padding: 44px 20px;
+    }
+  }
