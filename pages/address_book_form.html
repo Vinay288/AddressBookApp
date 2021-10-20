@@ -41,26 +41,26 @@
                     <label class="label text" for="address">Address</label>
                     <textarea id="address" class="input" name="address" placeholder="" style="height: 100px"
                         autocomplete="disable"></textarea>
-                <error-output id="address-error" class="add-error" for="address"></error-output>
+                    <error-output id="address-error" class="add-error" for="address"></error-output>
                 </div>
             </div>
             <div class="row-content location-row">
                 <div>
                     <label class="label text" for="city">City</label>
                     <select id="city" name="City">
-                        <option value="" hidden>Select City</option>
+                        <option value="" disabled selected hidden>Select City</option>
                         <option value="Bangalore">Bangalore</option>
-                        <option value="Chennai">Mumbai</option>
-                        <option value="Hyderabad">Cochin</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Cochin">Cochin</option>
                     </select>
                 </div>
-                <div class ="state-row">
+                <div class="state-row">
                     <label class="label text" for="state">State</label>
                     <select id="state" name="State">
-                        <option value="" hidden>Select State</option>
+                        <option value="" disabled selected hidden>Select State</option>
                         <option value="Karnataka">Karnataka</option>
-                        <option value="Telengana">Maharastra</option>
-                        <option value="Tamil Nadu">Kerala</option>
+                        <option value="Maharastra">Maharastra</option>
+                        <option value="Kerala">Kerala</option>
                     </select>
                 </div>
                 <div>
@@ -71,15 +71,17 @@
             </div>
             <div class="buttonParent">
                 <div class="submit-reset">
-                <button type="submit" class="button submitButton" id="submitButton" onclick="save()" disabled>
-                  Add
-                </button>
-                <button type="reset" class="resetButton button" id="resetButton" onclick="reset()" disabled>Reset</button>
+                    <button type="submit" class="button submitButton" id="submitButton" onclick="save()" disabled>
+                        Add
+                    </button>
+                    <button type="reset" class="resetButton button" id="resetButton" onclick="reset()"
+                        disabled>Reset</button>
                 </div>
-              </div>
+            </div>
         </form>
     </div>
     <script src="../js/utility.js"></script>
+    <script src="../js/site_properties.js"></script>
     <script src="../js/address_book_data.js"></script>
     <script src="../js/address_book_form.js"></script>
 </body>
