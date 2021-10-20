@@ -185,10 +185,12 @@ const createAndUpdateStorage = () => {
 const createOrUpdateContactDataToServer = () => {
     let postURL = site_properties.site_url;
     let methodCall = "POST";
+
     if (isUpdate) {
         methodCall = "PUT"
         postURL = postURL + contactDataObject.id.toString();
     }
+    
     makeServiceCall(methodCall, postURL, true, contactDataObject)
         .then(responseText => {
             resetForm();
