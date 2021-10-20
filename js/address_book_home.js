@@ -45,4 +45,14 @@ window.addEventListener("DOMContentLoaded", (event) => {
     }
     document.querySelector("#table-display").innerHTML = innerHtml;
   };
+  const remove = (node) => {
+    let personData = contactsList.find(contactData => contactData.id == node.id);
+    console.log(personData);
+    if (!personData) return;
+    const index = contactsList.map(contactData => contactData.id).indexOf(personData.id);
+    contactsList.splice(index, 1);
+    localStorage.setItem("ContactsList", JSON.stringify(contactsList));
+    document.querySelector(".address-count").textContent = contactsList.length;
+    createInnerHtml();
+  }
  
