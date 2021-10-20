@@ -10,7 +10,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
             return;
         }
         try {
-            (new AddressBookData()).name = name.value;
+            checkName(name.value);
+            enableButton();
             textError.textContent = "";
         } catch (e) {
             buttonAction(true);
@@ -26,7 +27,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
             return;
         }
         try {
-            (new AddressBookData()).phone = phoneNumber.value;
+            checkPhoneNumber(phoneNumber.value);
+            enableButton();
             PhoneNumberError.textContent = "";
         } catch (e) {
             buttonAction(true);
@@ -43,11 +45,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
             return;
         }
         try {
-            (new AddressBookData()).zipcode = zip.value;
+            checkZipCode(zip.value);
+            enableButton();
             zipError.textContent = "";
-            if (zip.value && phoneNumber.value && name.value) {
-                buttonAction(false);
-            }
         } catch (e) {
             buttonAction(true);
             zipError.textContent = e;
@@ -63,7 +63,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
             return;
         }
         try {
-            (new AddressBookData()).address = address.value;
+            checkAddress(address.value);
+            enableButton();
             addressError.textContent = "";
 
         } catch (e) {
@@ -71,6 +72,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
             addressError.textContent = e;
         }
     });
+    const enableButton=()=>{
+        if (zip.value && phoneNumber.value && name.value && address.value) {
+            buttonAction(false);
+        }
+    }
     checkForUpdate();
 });
 const checkForUpdate = () => {
@@ -116,20 +122,6 @@ const reset = () => {
     setValue("state", "");
     setValue("city", "");
     setValue("zip", "");
-}
-const createAddressBookData = () => {
-    let addressBookData = new AddressBookData();
-    try {
-        addressBookData.id = createNewContactId();
-        addressBookData.name = getInputValueById('#name');
-        addressBookData.phone = getInputValueById("#phoneNumber");
-        addressBookData.address = getInputValueById('#address');
-        addressBookData.state = getInputValueById("#state");
-        addressBookData.city = getInputValueById("#city");
-        addressBookData.zipcode = getInputValueById("#zip");
-    } catch (e) {
-        throw e;
-    }
 }
 const createAddressBookDataObject = () => {
     try {
