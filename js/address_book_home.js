@@ -1,23 +1,44 @@
 let contactsList;
 window.addEventListener("DOMContentLoaded", (event) => {
-    contactsList = getContactsDataFromStorage();
-    document.querySelector(".address-count").textContent = contactsList.length;
-    createInnerHtml();
-    localStorage.removeItem("editContact");
+  if (site_properties.localStorage.match("true")) {
+    getContactsDataFromStorage();
+  }
+  else {
+    getContactDataFromServer();
+    processEmployeeDataResponse();
+  }
+
 });
 const getContactsDataFromStorage = () => {
-    return localStorage.getItem("ContactsList")
-        ? JSON.parse(localStorage.getItem("ContactsList"))
-        : [];
+  contactsList = localStorage.getItem("ContactsList")
+    ? JSON.parse(localStorage.getItem("ContactsList"))
+    : [];
 };
+const getContactDataFromServer = () => {
+  makeServiceCall("GET", site_properties.site_url, true)
+    .then(responseText => {
+      contactsList = JSON.parse(responseText);
+      processEmployeeDataResponse();
+    })
+    .catch(error => {
+      console.log("GET error status" + JSON.stringify(error));
+      contactsList = [];
+      processEmployeeDataResponse();
+    });
+}
+const processEmployeeDataResponse = () => {
+  document.querySelector(".address-count").textContent = contactsList.length;
+  createInnerHtml();
+  localStorage.removeItem("editContact");
+}
 
 const createInnerHtml = () => {
-    console.log(contactsList);
-    if (contactsList.length == 0) return;
-    const headerHtml = "<tr><th>Full Name</th><th>Address</th><th>City</th><th>State</th><th>Zip Code</th><th>Phone Number</th><th>Actions</th></tr>";
-    let innerHtml = `${headerHtml}`;
-    for (const contactData of contactsList) {
-        innerHtml = `${innerHtml}
+  console.log(contactsList);
+  if (contactsList.length == 0) return;
+  const headerHtml = "<tr><th>Full Name</th><th>Address</th><th>City</th><th>State</th><th>Zip Code</th><th>Phone Number</th><th>Actions</th></tr>";
+  let innerHtml = `${headerHtml}`;
+  for (const contactData of contactsList) {
+    innerHtml = `${innerHtml}
               <tr>
                 <td>${contactData.name}</td>
                 <td>${contactData.address}</td>
@@ -41,25 +62,25 @@ const createInnerHtml = () => {
                 </td>
               </tr>
         `;
-        length += 1;
-    }
-    document.querySelector("#table-display").innerHTML = innerHtml;
+    length += 1;
+  }
+  document.querySelector("#table-display").innerHTML = innerHtml;
 };
 
 const remove = (node) => {
-    let contactData = contactsList.find(contact => contact.id == node.id);
-    console.log(contactData);
-    if (!contactData) return;
-    const index = contactsList.map(contact => contact.id).indexOf(contactData.id);
-    contactsList.splice(index, 1);
-    localStorage.setItem("ContactsList", JSON.stringify(contactsList));
-    document.querySelector(".address-count").textContent = contactsList.length;
-    createInnerHtml();
+  let contactData = contactsList.find(contact => contact.id == node.id);
+  console.log(contactData);
+  if (!contactData) return;
+  const index = contactsList.map(contact => contact.id).indexOf(contactData.id);
+  contactsList.splice(index, 1);
+  localStorage.setItem("ContactsList", JSON.stringify(contactsList));
+  document.querySelector(".address-count").textContent = contactsList.length;
+  createInnerHtml();
 };
 
 const update = (node) => {
-    let contactData = contactsList.find(contact => contact.id == node.id);
-    if (!contactData) return;
-    localStorage.setItem('editContact', JSON.stringify(contactData));
-    window.location.replace(site_properties.add_contacts);
+  let contactData = contactsList.find(contact => contact.id == node.id);
+  if (!contactData) return;
+  localStorage.setItem('editContact', JSON.stringify(contactData));
+  window.location.replace(site_properties.add_contacts);
 };
