@@ -1,0 +1,31 @@
+{
+    "AddressBookDB": [
+        {
+            "id": 1,
+            "name": "Vijay",
+            "phone": "9110477841",
+            "address": "near school",
+            "state": "Karnataka",
+            "city": "Bangalore",
+            "zipcode": "878000"
+        },
+        {
+            "id": "2",
+            "name": "Veeresh",
+            "phone": "9110473394",
+            "address": "jp nagar",
+            "state": "Karnataka",
+            "city": "Bangalore",
+            "zipcode": "587208"
+        },
+        {
+            "id": "3",
+            "name": "Kiran",
+            "phone": "9784515478",
+            "address": "5th cross",
+            "state": "Maharastra",
+            "city": "Mumbai",
+            "zipcode": "879983"
+        }
+    ]
+}
