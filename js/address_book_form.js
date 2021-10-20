@@ -1,3 +1,4 @@
+let isUpdate = false;
 let addressBookDataObject = {};
 window.addEventListener('DOMContentLoaded', (event) => {
     const name = document.querySelector('#name');
@@ -70,9 +71,30 @@ window.addEventListener('DOMContentLoaded', (event) => {
             addressError.textContent = e;
         }
     });
-
+    checkForUpdate();
 });
-const buttonAction=(value)=>{
+const checkForUpdate = () => {
+    const contactsJson = localStorage.getItem('editContact');
+    isUpdate = contactsJson ? true : false;
+    if (!isUpdate) return;
+    contactObject = JSON.parse(contactsJson);
+    setForm();
+};
+const setForm = () => {
+    document.getElementById('submitButton').innerHTML = "Update";
+    buttonAction(false);
+    setValue('#name', contactObject.name);
+    setValue('#phoneNumber', contactObject.phone);
+    setValue('#address', contactObject.address);
+    setValue('#city', contactObject.city);
+    setValue('#state', contactObject.state);
+    setValue('#zip', contactObject.zipcode);
+};
+const setValue = (propertyId, value) => {
+    const element = document.querySelector(propertyId);
+    element.value = value;
+};
+const buttonAction = (value) => {
     document.getElementById('submitButton').disabled = value;
     document.getElementById('resetButton').disabled = value
 }
