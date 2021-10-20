@@ -4,36 +4,36 @@ window.addEventListener("DOMContentLoaded", (event) => {
     document.querySelector(".address-count").textContent = contactsList.length;
     createInnerHtml();
     localStorage.removeItem("editEmp");
-  });
-  const getContactsDataFromStorage = () => {
+});
+const getContactsDataFromStorage = () => {
     return localStorage.getItem("ContactsList")
-      ? JSON.parse(localStorage.getItem("ContactsList"))
-      : [];
-  };
-  
-  const createInnerHtml = () => {
-      console.log(contactsList);
+        ? JSON.parse(localStorage.getItem("ContactsList"))
+        : [];
+};
+
+const createInnerHtml = () => {
+    console.log(contactsList);
     if (contactsList.length == 0) return;
     const headerHtml = "<tr><th>Full Name</th><th>Address</th><th>City</th><th>State</th><th>Zip Code</th><th>Phone Number</th><th>Actions</th></tr>";
     let innerHtml = `${headerHtml}`;
-    for (const personData of contactsList) {
-      innerHtml = `${innerHtml}
+    for (const contactData of contactsList) {
+        innerHtml = `${innerHtml}
               <tr>
-                <td>${personData.name}</td>
-                <td>${personData.address}</td>
-                <td>${personData.city}</td>
-                <td>${personData.state}</td>
-                <td>${personData.zipcode}</td>
-                <td>${personData.phone}</td>
+                <td>${contactData.name}</td>
+                <td>${contactData.address}</td>
+                <td>${contactData.city}</td>
+                <td>${contactData.state}</td>
+                <td>${contactData.zipcode}</td>
+                <td>${contactData.phone}</td>
                 <td>
                   <img
-                    id="${personData.id}"
+                    id="${contactData.id}"
                     onclick="remove(this)"
                     alt="delete"
                     src="../assets/icons/delete-black-18dp.svg"
                   />
                   <img
-                    id="${personData.id}"
+                    id="${contactData.id}"
                     alt="edit"
                     onclick="update(this)"
                     src="../assets/icons/create-black-18dp.svg"
@@ -41,18 +41,25 @@ window.addEventListener("DOMContentLoaded", (event) => {
                 </td>
               </tr>
         `;
-      length += 1;
+        length += 1;
     }
     document.querySelector("#table-display").innerHTML = innerHtml;
-  };
-  const remove = (node) => {
-    let personData = contactsList.find(contactData => contactData.id == node.id);
-    console.log(personData);
-    if (!personData) return;
-    const index = contactsList.map(contactData => contactData.id).indexOf(personData.id);
+};
+
+const remove = (node) => {
+    let contactData = contactsList.find(contact => contact.id == node.id);
+    console.log(contactData);
+    if (!contactData) return;
+    const index = contactsList.map(contact => contact.id).indexOf(contactData.id);
     contactsList.splice(index, 1);
     localStorage.setItem("ContactsList", JSON.stringify(contactsList));
     document.querySelector(".address-count").textContent = contactsList.length;
     createInnerHtml();
-  }
- 
+};
+
+const update = (node) => {
+    let contactData = contactsList.find(contact => contact.id == node.id);
+    if (!contactData) return;
+    localStorage.setItem('editContact', JSON.stringify(contactData));
+    window.location.replace(site_properties.add_contacts);
+};
