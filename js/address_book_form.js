@@ -1,5 +1,5 @@
 let isUpdate = false;
-let addressBookDataObject = {};
+let contactDataObject = {};
 window.addEventListener('DOMContentLoaded', (event) => {
     const name = document.querySelector('#name');
     const textError = document.querySelector('.text-error');
@@ -77,18 +77,18 @@ const checkForUpdate = () => {
     const contactsJson = localStorage.getItem('editContact');
     isUpdate = contactsJson ? true : false;
     if (!isUpdate) return;
-    contactObject = JSON.parse(contactsJson);
+    contactDataObject = JSON.parse(contactsJson);
     setForm();
 };
 const setForm = () => {
     document.getElementById('submitButton').innerHTML = "Update";
     buttonAction(false);
-    setValue('#name', contactObject.name);
-    setValue('#phoneNumber', contactObject.phone);
-    setValue('#address', contactObject.address);
-    setValue('#city', contactObject.city);
-    setValue('#state', contactObject.state);
-    setValue('#zip', contactObject.zipcode);
+    setValue('#name', contactDataObject.name);
+    setValue('#phoneNumber', contactDataObject.phone);
+    setValue('#address', contactDataObject.address);
+    setValue('#city', contactDataObject.city);
+    setValue('#state', contactDataObject.state);
+    setValue('#zip', contactDataObject.zipcode);
 };
 const setValue = (propertyId, value) => {
     const element = document.querySelector(propertyId);
@@ -99,13 +99,14 @@ const buttonAction = (value) => {
     document.getElementById('resetButton').disabled = value
 }
 const save = () => {
+    event.preventDefault();
+    event.stopPropagation();
     try {
-        createAddressBookData();
         createAddressBookDataObject();
         createAndUpdateStorage();
     }
     catch (e) {
-        alert(" please Enter all values")
+        alert("please Enter all values")
     }
 }
 const reset = () => {
@@ -132,13 +133,13 @@ const createAddressBookData = () => {
 }
 const createAddressBookDataObject = () => {
     try {
-        addressBookDataObject.id = createNewContactId();
-        addressBookDataObject.name = getInputValueById('#name');
-        addressBookDataObject.phone = getInputValueById("#phoneNumber");
-        addressBookDataObject.address = getInputValueById('#address');
-        addressBookDataObject.state = getInputValueById("#state");
-        addressBookDataObject.city = getInputValueById("#city");
-        addressBookDataObject.zipcode = getInputValueById("#zip");
+        if(!isUpdate)contactDataObject.id = createNewContactId();
+        contactDataObject.name = getInputValueById('#name');
+        contactDataObject.phone = getInputValueById("#phoneNumber");
+        contactDataObject.address = getInputValueById('#address');
+        contactDataObject.state = getInputValueById("#state");
+        contactDataObject.city = getInputValueById("#city");
+        contactDataObject.zipcode = getInputValueById("#zip");
     } catch (e) {
         console.log(e);
     }
@@ -154,13 +155,32 @@ const createNewContactId = () => {
     return contactID;
 }
 const createAndUpdateStorage = () => {
-    let contactList = JSON.parse(localStorage.getItem("ContactsList"));
-    if (contactList) {
-        contactList.push(addressBookDataObject);
+    let contactsList = JSON.parse(
+        localStorage.getItem("ContactsList")
+    );
+    if (contactsList) {
+        let contactData = contactsList.find(
+            (contact) => contact.id == contactDataObject.id
+        );
+            console.log(contactDataObject.id);
+        if (!contactData) {
+            contactsList.push(contactDataObject);
+        } else {
+            const index = contactsList
+                .map((contact) => contact.id)
+                .indexOf(contactData.id);
+            contactsList.splice(
+                index,
+                1,
+                contactDataObject
+            );
+        }
+    } else {
+        contactsList = [contactDataObject];
     }
-    else {
-        contactList = [addressBookDataObject];
-    }
-    localStorage.setItem("ContactsList", JSON.stringify(contactList));
-    alert("updated contact details! total contacts are = " + contactList.length);
+    localStorage.setItem(
+        "ContactsList",
+        JSON.stringify(contactsList)
+    );
+    window.location.replace(site_properties.home_page);
 }
