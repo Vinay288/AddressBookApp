@@ -169,6 +169,7 @@ body {
     justify-content: space-between;
     margin-top: 20px;
     padding-left: 65%;
+    margin-bottom: 30px;
 }
 .button{
     height: 125%;
@@ -210,21 +211,9 @@ button:disabled {
     white-space: nowrap;
   }
   
-  @media only screen and (max-width: 960px) {
-    .cancelButton {
-      margin-left: 0px;
-    }
   
-    .form {
-      width: 85%;
-      padding: 44px 20px;
-    }
-    .buttonParent{
-      padding-left: 50%;
-    }
-  }
   
-  @media only screen and (max-width: 673px) {
+  @media only screen and (max-width: 1500px) {
     .form {
       margin-top: 10px;
     }
@@ -255,11 +244,6 @@ button:disabled {
   
     .submitButton {
       margin: 0;
+      padding-right: 20px;
     }
-  
-    .buttonParent {
-      flex-direction: column-reverse;
-      align-items: flex-start;
-    }
-   
   }
