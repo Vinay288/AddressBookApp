@@ -11,7 +11,7 @@ class AddressBookData {
 
     get phone() { return this._phone; }
     set phone(phone) {
-        if (checkPhoneNumber(phone))
+        if (checkPhoneNumber(phone) && phone.length != 0)
             this._phone = phone;
         else throw 'Phone Number is Invalid';
     }
