@@ -72,7 +72,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             addressError.textContent = e;
         }
     });
-    const enableButton=()=>{
+    const enableButton = () => {
         if (zip.value && phoneNumber.value && name.value && address.value) {
             buttonAction(false);
         }
@@ -104,12 +104,19 @@ const buttonAction = (value) => {
     document.getElementById('submitButton').disabled = value;
     document.getElementById('resetButton').disabled = value
 }
+
 const save = () => {
     event.preventDefault();
     event.stopPropagation();
     try {
         createAddressBookDataObject();
-        createAndUpdateStorage();
+        if (site_properties.localStorage.match("true")) {
+            createAndUpdateStorage();
+        }
+        else {
+            createOrUpdateContactDataToServer();
+        }
+        window.location.replace(site_properties.home_page);
     }
     catch (e) {
         alert("please Enter all values")
@@ -125,7 +132,7 @@ const reset = () => {
 }
 const createAddressBookDataObject = () => {
     try {
-        if(!isUpdate)contactDataObject.id = createNewContactId();
+        if (!isUpdate && site_properties.localStorage.match("true")) contactDataObject.id = createNewContactId();
         contactDataObject.name = getInputValueById('#name');
         contactDataObject.phone = getInputValueById("#phoneNumber");
         contactDataObject.address = getInputValueById('#address');
@@ -154,7 +161,7 @@ const createAndUpdateStorage = () => {
         let contactData = contactsList.find(
             (contact) => contact.id == contactDataObject.id
         );
-            console.log(contactDataObject.id);
+        console.log(contactDataObject.id);
         if (!contactData) {
             contactsList.push(contactDataObject);
         } else {
@@ -174,5 +181,19 @@ const createAndUpdateStorage = () => {
         "ContactsList",
         JSON.stringify(contactsList)
     );
-    window.location.replace(site_properties.home_page);
+}
+const createOrUpdateContactDataToServer = () => {
+    let postURL = site_properties.site_url;
+    let methodCall = "POST";
+    if (isUpdate) {
+        methodCall = "PUT"
+        postURL = postURL + contactDataObject.id.toString();
+    }
+    makeServiceCall(methodCall, postURL, true, contactDataObject)
+        .then(responseText => {
+            resetForm();
+        })
+        .catch(error => {
+            throw error;
+        });
 }
