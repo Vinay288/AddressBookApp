@@ -1,5 +1,6 @@
 let isUpdate = false;
 let contactDataObject = {};
+let stateList;
 window.addEventListener('DOMContentLoaded', (event) => {
     const name = document.querySelector('#name');
     const textError = document.querySelector('.text-error');
@@ -53,7 +54,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
             zipError.textContent = e;
         }
     });
-
+    const state = document.querySelector('#state');
+    state.addEventListener('input', function () {
+        let cityList = stateList[state.value];
+        createCityInnerHtml(cityList);
+    });
     const address = document.querySelector('#address');
     const addressError = document.querySelector('#address-error');
     address.addEventListener('input', function () {
@@ -77,8 +82,32 @@ window.addEventListener('DOMContentLoaded', (event) => {
             buttonAction(false);
         }
     }
+    makeServiceCall("GET", site_properties.state_url, true)
+        .then(responseText => {
+            stateList = JSON.parse(responseText);
+            createStateInnerHtml();
+        })
+        .catch(error => {
+            console.log("GET error status" + JSON.stringify(error));
+            stateList = [];
+        });
+
     checkForUpdate();
 });
+const createCityInnerHtml = (cityList) => {
+    let innerHtml = `<option value="" disabled selected hidden>Select City</option>`;
+    for (const city of cityList) {
+        innerHtml = `${innerHtml}<option value="${city}">${city}</option>`
+    }
+    document.querySelector("#city").innerHTML = innerHtml;
+}
+const createStateInnerHtml = () => {
+    let innerHtml = `<option value="" disabled selected hidden>Select State</option>`;
+    for (const state of Object.keys(stateList)) {
+        innerHtml = `${innerHtml}<option value="${state}">${state}</option>`
+    }
+    document.querySelector("#state").innerHTML = innerHtml;
+}
 const checkForUpdate = () => {
     const contactsJson = localStorage.getItem('editContact');
     isUpdate = contactsJson ? true : false;
@@ -190,7 +219,7 @@ const createOrUpdateContactDataToServer = () => {
         methodCall = "PUT"
         postURL = postURL + contactDataObject.id.toString();
     }
-    
+
     makeServiceCall(methodCall, postURL, true, contactDataObject)
         .then(responseText => {
             resetForm();
